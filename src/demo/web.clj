@@ -6,7 +6,7 @@
 (def jetty (atom nil))
 
 (defn handler [{params :params}]
-  (. Thread (sleep 8000))
+  (. Thread (sleep 9000))
   {:status  200
    :headers {"Content-Type" "text/plain"}
    :body    (str "Hello " (params "name") "\n")})
@@ -19,10 +19,10 @@
  (.setShutdown @jetty true))
 
 (defn graceful-restart [jetty]
-    (.setGracefulShutdown jetty 9000)
+    (.setGracefulShutdown jetty 10000)
     (.setStopAtShutdown jetty true))
 
 (defn -main []
   (let [port (Integer/parseInt (System/getenv "PORT"))]
     (.addShutdownHook (Runtime/getRuntime) (Thread. shutdown))
-    (reset! jetty (run-jetty app {:port port, :configurator graceful-restart}))))
+    (reset! jetty (run-jetty app {:port port, :join? false, :configurator graceful-restart}))))
