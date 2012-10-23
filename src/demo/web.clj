@@ -6,7 +6,7 @@
 (def jetty (atom nil))
 
 (defn handler [{params :params}]
-  (. Thread (sleep 50000))
+  (. Thread (sleep 8000))
   {:status  200
    :headers {"Content-Type" "text/plain"}
    :body    (str "Hello " (params "name") "\n")})
@@ -19,7 +19,7 @@
  (.setShutdown @jetty true))
 
 (defn graceful-restart [jetty]
-    (.setGracefulShutdown jetty 55000)
+    (.setGracefulShutdown jetty 9000)
     (.setStopAtShutdown jetty true))
 
 (defn -main []
